@@ -12,6 +12,29 @@ export const maxDuration = 30;
 export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();
 
+  const ExerciseTopicSchema = z.object({
+    topic: z
+      .string()
+      .describe(
+        "The learning topic and context, e.g. 'German definite and indefinite articles in nominative'",
+      ),
+    language: z
+      .string()
+      .optional()
+      .describe("Target language for the exercise, e.g. 'German'."),
+    level: z
+      .string()
+      .optional()
+      .describe("Proficiency or difficulty, e.g. 'A2' or 'beginner'."),
+    numSentences: z
+      .number()
+      .int()
+      .min(3)
+      .max(12)
+      .default(6)
+      .describe("Number of sentences to generate."),
+  });
+
   const result = streamText({
     model: openai("gpt-4.1-mini"),
     messages: convertToModelMessages(messages),
@@ -20,28 +43,7 @@ export async function POST(req: Request) {
       createExercise: {
         description:
           "Create a gap-fill exercise. Use when the user has specified what to learn (topic, language, level). Return a structured exercise with an items array: each item has a sentence with a single gap marked as ___, its correct answer word, and a unique id.",
-        parameters: z.object({
-          topic: z
-            .string()
-            .describe(
-              "The learning topic and context, e.g. 'German definite and indefinite articles in nominative'",
-            ),
-          language: z
-            .string()
-            .optional()
-            .describe("Target language for the exercise, e.g. 'German'."),
-          level: z
-            .string()
-            .optional()
-            .describe("Proficiency or difficulty, e.g. 'A2' or 'beginner'."),
-          numSentences: z
-            .number()
-            .int()
-            .min(3)
-            .max(12)
-            .default(6)
-            .describe("Number of sentences to generate."),
-        }),
+        inputSchema: ExerciseTopicSchema,
         execute: async ({ topic, language, level, numSentences }) => {
           const ExerciseSchema = z.object({
             title: z.string(),
