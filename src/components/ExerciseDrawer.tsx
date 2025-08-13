@@ -99,8 +99,8 @@ export function ExerciseDrawer({
         onOpenChange(o);
       }}
     >
-      <DrawerContent className="h-screen">
-        <DrawerHeader className="mx-auto hidden md:block lg:max-w-1/3">
+      <DrawerContent className="h-screen overflow-hidden">
+        <DrawerHeader className="mx-auto mt-10 hidden md:block lg:max-w-1/3">
           <DrawerTitle className="text-xl text-balance md:text-2xl">
             {exercise?.title ?? "Exercise"}
           </DrawerTitle>
@@ -111,9 +111,9 @@ export function ExerciseDrawer({
         </DrawerHeader>
 
         <DndContext onDragEnd={onDragEnd}>
-          <div className="mx-auto mt-2 w-fit space-y-4 overflow-clip overflow-y-auto bg-amber-400/10 p-4">
+          <div className="mx-auto mt-6 max-w-4xl space-y-4 overflow-clip p-4">
             <div className="space-y-3">
-              {exercise?.items.map((it) => {
+              {exercise?.items.map((it, index) => {
                 const parts = (it.sentence || "").split("___");
                 const bankKey = placed[it.id] ?? null;
                 const pickedWord = bankKey
@@ -122,6 +122,7 @@ export function ExerciseDrawer({
                 const isCorrect = showResult ? correctness[it.id] : undefined;
                 return (
                   <div key={it.id} className="text-base">
+                    <span className="font-semibold">{index + 1}) </span>
                     <span>{parts[0] ?? ""} </span>
                     <DroppableSlot id={`slot-${it.id}`}>
                       <div
@@ -163,7 +164,7 @@ export function ExerciseDrawer({
               {/* <h4 className="mb-2 text-sm font-medium text-muted-foreground">
                 Words
               </h4> */}
-              <div className="mt-2 flex flex-nowrap gap-2">
+              <div className="mt-6 flex flex-nowrap gap-2">
                 {availableWords.map((be) => (
                   <DraggableWord key={be.key} bankKey={be.key} word={be.word} />
                 ))}
@@ -201,7 +202,7 @@ function DraggableWord({ bankKey, word }: { bankKey: string; word: string }) {
       {...listeners}
       {...attributes}
       className={cn(
-        "cursor-grab rounded-md border bg-secondary px-2 py-1 text-sm shadow-sm select-none active:cursor-grabbing",
+        "cursor-grab rounded-md border bg-secondary px-2 py-1 text-base shadow-sm select-none active:cursor-grabbing",
         isDragging && "opacity-70",
       )}
       style={{
