@@ -28,7 +28,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="opacity-15">
+        <div className="opacity-10">
           <AnimatedGridPattern />
         </div>
         <main className="h-dvh w-dvw overflow-clip">{children}</main>

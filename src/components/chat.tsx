@@ -144,8 +144,13 @@ const ConversationDemo = () => {
         {/* <Spotlight /> */}
         {/* <AnimatedGridPattern /> */}
         <SparklesText
+          colors={{ first: "#36ba01", second: "#009a22" }}
           sparklesCount={6}
-          className="absolute top-36 left-1/2 -translate-x-1/2 font-mono text-[80px] font-normal antialiased md:top-30 md:text-[200px]"
+          className={cn(
+            "transition duration-200 ease-out",
+            "absolute top-36 left-1/2 -translate-x-1/2 font-mono text-[90px] font-normal antialiased md:top-30 md:text-[200px]",
+            { "opacity-0": !isChatEmpty },
+          )}
         >
           Learnit
         </SparklesText>
