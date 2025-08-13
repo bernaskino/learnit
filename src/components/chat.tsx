@@ -73,7 +73,7 @@ const ConversationDemo = () => {
                           if (isExerciseTool && isOutput && t.output) {
                             try {
                               const data = t.output as ExerciseData;
-                              if (data?.sentences && data?.words)
+                              if (data?.items && Array.isArray(data.items))
                                 setExercise(data);
                             } catch {}
                           }
