@@ -99,17 +99,19 @@ export function ExerciseDrawer({
         onOpenChange(o);
       }}
     >
-      <DrawerContent>
-        <DrawerHeader>
-          <DrawerTitle>{exercise?.title ?? "Exercise"}</DrawerTitle>
-          <DrawerDescription>
+      <DrawerContent className="h-screen">
+        <DrawerHeader className="mx-auto hidden md:block lg:max-w-1/3">
+          <DrawerTitle className="text-xl text-balance md:text-2xl">
+            {exercise?.title ?? "Exercise"}
+          </DrawerTitle>
+          <DrawerDescription className="text-base text-balance">
             {exercise?.instructions ??
               "Fill each gap by dragging the correct word."}
           </DrawerDescription>
         </DrawerHeader>
 
         <DndContext onDragEnd={onDragEnd}>
-          <div className="space-y-4 overflow-y-auto">
+          <div className="mx-auto mt-2 w-fit space-y-4 overflow-clip overflow-y-auto bg-amber-400/10 p-4">
             <div className="space-y-3">
               {exercise?.items.map((it) => {
                 const parts = (it.sentence || "").split("___");
@@ -158,10 +160,10 @@ export function ExerciseDrawer({
             </div>
 
             <div>
-              <h4 className="mb-2 text-sm font-medium text-muted-foreground">
+              {/* <h4 className="mb-2 text-sm font-medium text-muted-foreground">
                 Words
-              </h4>
-              <div className="flex flex-wrap gap-2">
+              </h4> */}
+              <div className="mt-2 flex flex-nowrap gap-2">
                 {availableWords.map((be) => (
                   <DraggableWord key={be.key} bankKey={be.key} word={be.word} />
                 ))}
@@ -170,16 +172,17 @@ export function ExerciseDrawer({
           </div>
         </DndContext>
 
-        <DrawerFooter>
+        <DrawerFooter className="mx-auto flex max-w-3xl min-w-full md:min-w-1/2">
           <Button variant="secondary" onClick={reset}>
             Repeat
           </Button>
           <Button onClick={() => setShowResult((v) => !v)}>
             {showResult ? "Hide Result" : "Show Result"}
           </Button>
-          <DrawerClose>
-            <Button variant="outline">Close</Button>
-          </DrawerClose>
+          {/* <DrawerClose> */}
+          {/* <Button variant="outline" >Close</Button> */}
+          {/* Close */}
+          {/* </DrawerClose> */}
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

@@ -138,7 +138,7 @@ const ConversationDemo = () => {
   return (
     <div className="relative mx-auto size-full h-full min-h-[600px] max-w-4xl rounded-lg border">
       <div className="flex h-full flex-col">
-        <Conversation>
+        <Conversation className="pb-20">
           <ConversationContent>{renderedMessages}</ConversationContent>
           <ConversationScrollButton />
         </Conversation>
