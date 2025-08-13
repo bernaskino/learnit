@@ -1,7 +1,15 @@
-import Image from "next/image";
+import {
+  Conversation,
+  ConversationContent,
+  ConversationScrollButton,
+} from "@/components/ai-elements/conversation";
+import { Message, MessageContent } from "@/components/ai-elements/message";
+import Chat from "@/components/chat";
 
 export default function Home() {
   return (
-    <section className="mx-auto h-full w-full bg-gray-300 p-4 md:w-2/3"></section>
+    <section className="mx-auto h-full w-full bg-gray-300 md:w-2/3">
+      <Chat />
+    </section>
   );
 }
