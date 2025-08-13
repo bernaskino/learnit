@@ -15,15 +15,26 @@ import {
   PromptInputModelSelectItem,
   PromptInputModelSelect,
 } from "@/components/ai-elements/prompt-input";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { Response } from "@/components/ai-elements/response";
 import { cn } from "@/lib/utils";
+import {
+  Tool,
+  ToolContent,
+  ToolHeader,
+  ToolInput,
+  ToolOutput,
+} from "@/components/ai-elements/tool";
+import { Button } from "@/components/ui/button";
+import { ExerciseDrawer, type ExerciseData } from "@/components/ExerciseDrawer";
 
 const ConversationDemo = () => {
   const [input, setInput] = useState("");
   const { messages, sendMessage, status } = useChat();
   const isChatEmpty = messages.length == 0;
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [exercise, setExercise] = useState<ExerciseData | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,14 +54,55 @@ const ConversationDemo = () => {
                 <MessageContent>
                   {message.parts.map((part, i) => {
                     switch (part.type) {
-                      case "text": // we don't use any reasoning or tool calls in this example
+                      case "text":
                         return (
                           <Response key={`${message.id}-${i}`}>
                             {part.text}
                           </Response>
                         );
-                      default:
+                      default: {
+                        // Render tool UI parts from the AI SDK (type starts with 'tool-')
+                        const t = part as any;
+                        if (
+                          typeof t?.type === "string" &&
+                          t.type.startsWith("tool-")
+                        ) {
+                          const isExerciseTool =
+                            t.type === "tool-createExercise";
+                          const isOutput = t.state === "output-available";
+                          if (isExerciseTool && isOutput && t.output) {
+                            try {
+                              const data = t.output as ExerciseData;
+                              if (data?.sentences && data?.words)
+                                setExercise(data);
+                            } catch {}
+                          }
+                          return (
+                            <Tool key={`${message.id}-${i}`} defaultOpen>
+                              <ToolHeader type={t.type} state={t.state} />
+                              <ToolContent>
+                                <ToolInput input={t.input} />
+                                <ToolOutput
+                                  errorText={t.errorText}
+                                  output={
+                                    isExerciseTool && isOutput ? (
+                                      <div className="flex items-center gap-2">
+                                        <Button
+                                          size="sm"
+                                          onClick={() => setDrawerOpen(true)}
+                                        >
+                                          Open Exercise
+                                        </Button>
+                                      </div>
+                                    ) : undefined
+                                  }
+                                />
+                              </ToolContent>
+                            </Tool>
+                          );
+                        }
                         return null;
+                      }
                     }
                   })}
                 </MessageContent>
@@ -88,6 +140,12 @@ const ConversationDemo = () => {
           />
           {/* </PromptInputToolbar> */}
         </Input>
+
+        <ExerciseDrawer
+          open={drawerOpen}
+          onOpenChange={setDrawerOpen}
+          exercise={exercise}
+        />
       </div>
     </div>
   );
