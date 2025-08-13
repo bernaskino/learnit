@@ -28,6 +28,9 @@ import {
 } from "@/components/ai-elements/tool";
 import { Button } from "@/components/ui/button";
 import { ExerciseDrawer, type ExerciseData } from "@/components/ExerciseDrawer";
+import { SparklesText } from "@/components/magicui/sparkles-text";
+import { Spotlight } from "@/components/magicui/spotlight";
+import { AnimatedGridPattern } from "@/components/magicui/animated-grid-pattern";
 
 const ConversationDemo = () => {
   const [input, setInput] = useState("");
@@ -136,13 +139,20 @@ const ConversationDemo = () => {
   }, [messages, handleOpenDrawer]);
 
   return (
-    <div className="relative mx-auto size-full h-full min-h-[600px] max-w-4xl rounded-lg border">
+    <div className="relative mx-auto size-full h-full min-h-[600px] max-w-4xl rounded-lg">
       <div className="flex h-full flex-col">
+        {/* <Spotlight /> */}
+        {/* <AnimatedGridPattern /> */}
+        <SparklesText
+          sparklesCount={6}
+          className="absolute top-36 left-1/2 -translate-x-1/2 font-mono text-[80px] font-normal antialiased md:top-30 md:text-[200px]"
+        >
+          Learnit
+        </SparklesText>
         <Conversation className="pb-20">
           <ConversationContent>{renderedMessages}</ConversationContent>
           <ConversationScrollButton />
         </Conversation>
-
         <Input
           onSubmit={handleSubmit}
           className={cn(
@@ -171,7 +181,6 @@ const ConversationDemo = () => {
           />
           {/* </PromptInputToolbar> */}
         </Input>
-
         <ExerciseDrawer
           open={drawerOpen}
           onOpenChange={setDrawerOpen}

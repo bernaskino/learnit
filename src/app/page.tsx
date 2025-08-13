@@ -8,7 +8,7 @@ import Chat from "@/components/chat";
 
 export default function Home() {
   return (
-    <section className="mx-auto h-full w-full bg-gray-300 md:w-2/3">
+    <section className="mx-auto h-full w-full bg-gray-300/10 md:w-2/3">
       <Chat />
     </section>
   );
