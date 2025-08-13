@@ -18,10 +18,12 @@ import {
 import { useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { Response } from "@/components/ai-elements/response";
+import { cn } from "@/lib/utils";
 
 const ConversationDemo = () => {
   const [input, setInput] = useState("");
   const { messages, sendMessage, status } = useChat();
+  const isChatEmpty = messages.length == 0;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,7 +34,7 @@ const ConversationDemo = () => {
   };
 
   return (
-    <div className="relative mx-auto size-full h-[600px] max-w-4xl rounded-lg border p-6">
+    <div className="relative mx-auto size-full h-full min-h-[600px] max-w-4xl rounded-lg border">
       <div className="flex h-full flex-col">
         <Conversation>
           <ConversationContent>
@@ -60,7 +62,13 @@ const ConversationDemo = () => {
 
         <Input
           onSubmit={handleSubmit}
-          className="relative mx-auto mt-4 w-full max-w-2xl"
+          className={cn(
+            "absolute bottom-8 left-1/2 mt-4 w-full max-w-2xl -translate-x-1/2",
+            "transition-all duration-500 ease-in-out",
+            {
+              "bottom-1/2": isChatEmpty,
+            },
+          )}
         >
           <PromptInputTextarea
             value={input}
