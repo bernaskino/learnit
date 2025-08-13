@@ -74,7 +74,7 @@ const ConversationDemo = () => {
             value={input}
             placeholder="What would you like to learn?"
             onChange={(e) => setInput(e.currentTarget.value)}
-            className="pr-12"
+            className="pr-12 !text-base"
           />
           {/* <PromptInputToolbar>
             <PromptInputTools /> */}
